@@ -1,6 +1,5 @@
 library(shiny)
 library(shinyWidgets)
-library(shinyjs)
 library(starBliss)
 library(ggplot2)
 

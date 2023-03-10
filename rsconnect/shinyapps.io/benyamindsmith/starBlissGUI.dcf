@@ -1,0 +1,13 @@
+name: starBlissGUI
+title: starBlissGUI
+username:
+account: benyamindsmith
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 8537008
+bundleId: 6943057
+url: https://benyamindsmith.shinyapps.io/starBlissGUI/
+when: 1678477020.58897
+lastSyncTime: 1678477020.58898
+asMultiple: FALSE
+asStatic: FALSE
