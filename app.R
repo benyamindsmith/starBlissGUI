@@ -13,7 +13,7 @@ ui <- fluidPage(
           
           div(
             style = "width: 50%; margin: 0 auto;", 
-            uiOutput("starmap_output")
+            imageOutput("starmap_output")
           )
         ),
         sidebarPanel(
@@ -72,7 +72,9 @@ ui <- fluidPage(
                                            "Next Step")),
                               actionBttn("back_design",
                                          "Go Back")),
-                     tabPanel("Finish")
+                     tabPanel("Finish",
+                              downloadButton("downloadImage")
+                              )
           )
         )
     )
@@ -82,7 +84,12 @@ ui <- fluidPage(
 server <- function(input, output) {
  
   listener <- reactive({
-    list(input$location,input$style)
+    list(input$style,
+         input$location,
+         input$date,
+         input$line1,
+         input$line2,
+         input$line3)
   })
   observeEvent(input$to_design, {
     updateNavbarPage(inputId="navbar",selected = "Design")
@@ -100,23 +107,50 @@ server <- function(input, output) {
     updateNavbarPage(inputId="navbar",selected = "Design")
   })
   
-  observeEvent(listener(),{
-    map<- starBliss::plot_starmap(location=input[["location"]],
-                                  style = input[["style"]])
-    print(input[["style"]])
-    ggsave("./www/my_plot.png", 
-           plot = map, 
-           width = unit(10, 'in'), 
-           height = unit(15, 'in'),
-           dpi=150)
-    
+  rv <- reactiveValues(plot = NULL)
+  
+  # Define reactive values to store plot object
+  rv <- reactiveValues(plot = NULL)
+  
+  # Create observer to update plot object whenever input changes
+  observeEvent(listener(), {
+    plot <- starBliss::plot_starmap(
+      location = input[["location"]],
+      date = input[["date"]],
+      style = input[["style"]],
+      line1_text = input[["line1"]],
+      line2_text = input[["line2"]],
+      line3_text = input[["line3"]]
+    )
+    rv$plot <- plot
   })
   
   
-  output[["starmap_output"]]<- renderUI({
+  output[["starmap_output"]] <- renderImage({
+    if (!is.null(rv$plot)) {
+      # Create a temporary file name for the plot
+      tmp <- tempfile(fileext = ".png")
+      # Save the plot as a png image
+      ggsave(tmp, rv$plot, width = 10, height = 15, dpi = 150)
+      # Return the png image
+      list(src = tmp, width = "100%", height = "auto", alt = "starmap")
+    }
+  }, deleteFile = TRUE)
   
-    img(src="my_plot.png",height="800px")
-  })
+  output[["downloadImage"]] <- downloadHandler(
+    filename = function() {
+      paste0("starmap_",input[["style"]],"_",input[["location"]], ".png")
+    },
+    content = function(file) {
+      if (!is.null(rv$plot)) {
+        switch(input[["size"]],
+               "A4" = ggsave(file, rv$plot, width = 42.0, height = 59.4, units="cm", dpi = 150),
+               "A3" = ggsave(file, rv$plot, width = 29.7, height = 42.0, units="cm", dpi = 150),
+               "A2" = ggsave(file, rv$plot, width = 21.0, height = 29.7, units="cm", dpi = 150))
+        
+      }
+    }
+  )
 }
 
 # Run the application 
