@@ -8,11 +8,14 @@ ui <- fluidPage(
       tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
       ),
     br(),
+    div(
+      style = "width: 50%; margin: 0 auto;",
+      HTML('<img src="starbliss_header.svg" class ="header_logo" height = 100px>')
+    ),
     sidebarLayout(
         mainPanel(
-          
           div(
-            style = "width: 50%; margin: 0 auto;", 
+            style = "width: 50%; margin: 0 auto;",
             imageOutput("starmap_output")
           )
         ),

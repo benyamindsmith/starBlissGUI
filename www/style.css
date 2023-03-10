@@ -7,31 +7,3 @@
   background-color: #164B58;  
   height: 30px;
   width: 30px;}
-  
-  
-.a4_box{
-  display: inline-block;
-  height: 113px;
-  width: 82px;
-  border: 1px solid black;
-  vertical-align: middle;
-}
-
-.a3_box{
-  display: inline-block;
-  height: 83px;
-  width: 60px;
-  border: 1px solid black;
-  vertical-align: middle;
-  float: left;
-}
-
-
-.a2_box{
-  display: inline-block;
-  height: 55px;
-  width: 40px;
-  border: 1px solid black;
-  vertical-align: middle;
-  float: left;
-}
