@@ -1,5 +1,7 @@
 library(shiny)
 library(shinyWidgets)
+library(starBliss)
+library(ggplot2)
 
 ui <- fluidPage(
     tags$head(
@@ -7,13 +9,19 @@ ui <- fluidPage(
       ),
     br(),
     sidebarLayout(
-        mainPanel(),
+        mainPanel(
+          
+          div(
+            style = "width: 50%; margin: 0 auto;", 
+            uiOutput("starmap_output")
+          )
+        ),
         sidebarPanel(
           navbarPage("Create Your Custom Star Map",
                      id = "navbar",
                      tabPanel("Size",
                               radioGroupButtons(
-                                "radio",
+                                "size",
                                 choiceNames = c('A4 (42.0 x 59.4cm)',
                                                 'A3 (29.7 x 42.0cm)',
                                                 'A2 (21.0 x 29.7cm)'),
@@ -25,13 +33,12 @@ ui <- fluidPage(
                                          "Next Step")),
                      tabPanel("Design",
                               radioGroupButtons(
-                                "radio",
+                                "style",
                                 choiceNames = c('<div class="icon_black"></div>',
                                                 '<div class="icon_green"></div>'),
-                                choiceValues = c("black", "green")
+                                choiceValues = c("black", "green"),
+                                selected = "black"
                               ),
-                              verbatimTextOutput("test"),
-                              
                               div(
                               style = "position:absolute;right:1em;",
                               actionBttn("to_moment",
@@ -39,15 +46,26 @@ ui <- fluidPage(
                               actionBttn("back_size",
                                          "Go Back")),
                      tabPanel("Moment",
-                              textInput("location","Location of Your Special Moment"),
+                              textInput("location",
+                                        "Location of Your Special Moment",
+                                        value = "Toronto, ON, Canada"),
                               airDatepickerInput("date",
                                                  "Your Special Date",
                                                  value = lubridate::today(),
                                                  todayButton=TRUE,
                                                  autoClose = TRUE),
-                              textInput("line1","Add A Special Message",placeholder = "Line 1"),
-                              textInput("line2","",placeholder = "Line 2"),
-                              textInput("line3","",placeholder = "Line 3"),
+                              textInput("line1",
+                                        "Add A Special Message",
+                                        value = "Toronto, ON, Canada",
+                                        placeholder = "Line 1"),
+                              textInput("line2",
+                                        "Line 2",
+                                        value = lubridate::today(),
+                                        placeholder = "Line 2"),
+                              textInput("line3",
+                                        "Line 3",
+                                        value = "43.6532° N, 79.3832° W",
+                                        placeholder = "Line 3"),
                               div(
                                 style = "position:absolute;right:1em;",
                                 actionBttn("to_finish",
@@ -62,8 +80,10 @@ ui <- fluidPage(
 
 
 server <- function(input, output) {
-  
  
+  listener <- reactive({
+    list(input$location,input$style)
+  })
   observeEvent(input$to_design, {
     updateNavbarPage(inputId="navbar",selected = "Design")
   })
@@ -80,8 +100,22 @@ server <- function(input, output) {
     updateNavbarPage(inputId="navbar",selected = "Design")
   })
   
-  output[["test"]] <- renderPrint({
-    input[["radio"]]    
+  observeEvent(listener(),{
+    map<- starBliss::plot_starmap(location=input[["location"]],
+                                  style = input[["style"]])
+    print(input[["style"]])
+    ggsave("./www/my_plot.png", 
+           plot = map, 
+           width = unit(10, 'in'), 
+           height = unit(15, 'in'),
+           dpi=150)
+    
+  })
+  
+  
+  output[["starmap_output"]]<- renderUI({
+  
+    img(src="my_plot.png",height="800px")
   })
 }
 
