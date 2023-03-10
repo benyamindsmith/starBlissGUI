@@ -114,8 +114,6 @@ server <- function(input, output,session) {
     updateNavbarPage(inputId="navbar",selected = "Design")
   })
   
-  rv <- reactiveValues(plot = NULL)
-  
   # Define reactive values to store plot object
   rv <- reactiveValues(plot = NULL)
   
