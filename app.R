@@ -1,5 +1,6 @@
 library(shiny)
 library(shinyWidgets)
+library(shinyjs)
 library(starBliss)
 library(ggplot2)
 
@@ -76,7 +77,11 @@ ui <- fluidPage(
                               actionBttn("back_design",
                                          "Go Back")),
                      tabPanel("Finish",
-                              downloadButton("downloadImage")
+                              downloadButton("downloadImage"),
+                              actionBttn("donate_redirect",
+                                         "Donate",
+                                         icon = icon("paypal"),
+                                         onclick ="window.open('https://www.paypal.com/donate/?hosted_button_id=DU6DV4ADGLQYU')")
                               )
           )
         )
@@ -84,7 +89,7 @@ ui <- fluidPage(
 )
 
 
-server <- function(input, output) {
+server <- function(input, output,session) {
  
   listener <- reactive({
     list(input$style,
