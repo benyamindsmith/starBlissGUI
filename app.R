@@ -2,6 +2,7 @@ library(shiny)
 library(shinyWidgets)
 library(starBliss)
 library(ggplot2)
+library(svglite)
 
 ui <- fluidPage(
     tags$head(
@@ -134,11 +135,10 @@ server <- function(input, output,session) {
   output[["starmap_output"]] <- renderImage({
     if (!is.null(rv$plot)) {
       # Create a temporary file name for the plot
-      # svg makes things faster
-      tmp <- tempfile(fileext = ".svg")
+      tmp <- tempfile(fileext = ".png")
       # Save the plot as a png image
       ggsave(tmp, rv$plot, width = 10, height = 15, dpi = 150)
-      # Return the svg image
+      # Return the png image
       list(src = tmp, width = "100%", height = "auto", alt = "starmap")
     }
   }, deleteFile = TRUE)
