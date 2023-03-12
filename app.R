@@ -134,10 +134,11 @@ server <- function(input, output,session) {
   output[["starmap_output"]] <- renderImage({
     if (!is.null(rv$plot)) {
       # Create a temporary file name for the plot
-      tmp <- tempfile(fileext = ".png")
+      # svg makes things faster
+      tmp <- tempfile(fileext = ".svg")
       # Save the plot as a png image
       ggsave(tmp, rv$plot, width = 10, height = 15, dpi = 150)
-      # Return the png image
+      # Return the svg image
       list(src = tmp, width = "100%", height = "auto", alt = "starmap")
     }
   }, deleteFile = TRUE)
