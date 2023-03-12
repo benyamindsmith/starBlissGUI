@@ -91,12 +91,12 @@ ui <- fluidPage(
 server <- function(input, output,session) {
  
   listener <- reactive({
-    list(input$style,
-         input$location,
-         input$date,
-         input$line1,
-         input$line2,
-         input$line3)
+    list(input[["style"]],
+         input[["location"]],
+         input[["date"]],
+         input[["line1"]],
+         input[["line2"]],
+         input[["line3"]])
   })
   observeEvent(input$to_design, {
     updateNavbarPage(inputId="navbar",selected = "Design")
@@ -120,7 +120,7 @@ server <- function(input, output,session) {
   # Create observer to update plot object whenever input changes
   observeEvent(listener(), {
     plot <- starBliss::plot_starmap(
-      location = input[["location"]],
+      location = ifelse(is.na(input[["location"]]),"Toronto, ON, Canada",input[["location"]]),
       date = input[["date"]],
       style = input[["style"]],
       line1_text = input[["line1"]],
