@@ -2,7 +2,6 @@ library(shiny)
 library(shinyWidgets)
 library(starBliss)
 library(ggplot2)
-library(svglite)
 
 ui <- fluidPage(
     tags$head(
