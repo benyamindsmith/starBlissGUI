@@ -1,6 +1,6 @@
 # starBlissGUI
 
-A GUI for the starBliss package made with RShiny. Check it out on ShinyApps.io [here](https://benyamindsmith.shinyapps.io/starBlissGUI/) or build the Docker with the instructions below!
+A GUI for the starBliss package made with RShiny. Check it out on ShinyApps.io [here](https://benyamindsmith.shinyapps.io/starBlissGUI/) or build the Docker Image with the [instructions below](https://github.com/benyamindsmith/starBlissGUI#building-the-docker-image)!
 
 ![image](https://user-images.githubusercontent.com/46410142/224387785-553a101d-b722-494c-b7a6-1dada177ee74.png)
 
