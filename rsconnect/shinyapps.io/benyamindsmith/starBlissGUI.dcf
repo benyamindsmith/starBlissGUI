@@ -5,9 +5,10 @@ account: benyamindsmith
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 8546582
-bundleId: 6948833
+bundleId: 6968705
 url: https://benyamindsmith.shinyapps.io/starBlissGUI/
-when: 1678643099.84198
-lastSyncTime: 1678643099.84199
+when: 1679007655.87495
+lastSyncTime: 1679007655.87496
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: .RData|Dockerfile|README.md

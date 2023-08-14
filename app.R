@@ -1,26 +1,31 @@
 library(shiny)
 library(shinyWidgets)
+library(shinyjs)
 library(starBliss)
 library(ggplot2)
 
 ui <- fluidPage(
     tags$head(
-      tags$link(rel = "stylesheet", type = "text/css", href = "style.css")
+      tags$link(rel = "stylesheet", type = "text/css", href = "style.css"),
       ),
     br(),
     div(
-      style = "width: 50%; margin: 0 auto;",
-      HTML('<img src="starbliss_header.svg" class ="header_logo" height = 100px>')
+      style = "width: 60%; margin: 0 43%;",
+      HTML('<img src="starbliss_header_2.svg" class ="header_logo" height = 100px>')
     ),
+    setBackgroundImage("poster_background.jpg"),
     sidebarLayout(
-        mainPanel(
-          div(
-            style = "width: 50%; margin: 0 auto;",
-            imageOutput("starmap_output")
-          )
-        ),
+      mainPanel(div(
+        id = "wrapper",
+        div(
+          class = "content",
+          style = "position: fixed;width:27%; margin-left:36%;",
+          imageOutput("starmap_output")
+        )
+       )
+      ),
         sidebarPanel(
-          navbarPage("Create Your Custom Star Map",
+          navbarPage("Create A Custom Star Map",
                      id = "navbar",
                      tabPanel("Size",
                               radioGroupButtons(
